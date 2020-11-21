@@ -94,6 +94,7 @@ in
                   end
                   _}
                else raise incompatibleTypes(Exp1 Exp2) end
+               end
             else raise incompatibleTypes(Exp1 Exp2) end
             end %
          else
