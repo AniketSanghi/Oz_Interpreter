@@ -31,8 +31,7 @@ in
    %=================
    fun {SubstituteIdentifiers Exp Env}
       case Exp
-      of H|T then  
-	 {SubstituteIdentifiers H Env}|{SubstituteIdentifiers T Env}
+      of H|T then {SubstituteIdentifiers H Env}|{SubstituteIdentifiers T Env}
       [] ident(X) then {RetrieveFromSAS Env.X}
       else Exp end
    end
@@ -63,40 +62,43 @@ in
       if {List.member [Exp1 Exp2] UnificationsSoFar}
       then skip
       else
-	 Unifications = {List.append [Exp1 Exp2] UnificationsSoFar}
-	 case Exp1
-	 of equivalence(X) then
-	    case Exp2
-	    of equivalence(Y) then {BindRefToKeyInSAS X Y}
-	    else {BindValueToKeyInSAS X Exp2} end
-	 [] literal(X) then
-	    case Exp2
-	    of equivalence(_) then
-	       {UnifyRecursive Exp2 Exp1 Unifications}
-	    [] literal(!X) then skip
-	    else raise incompatibleTypes(Exp1 Exp2) end
-	    end
-	 [] record | L | Pairs1 then % not label(L)
-	    case Exp2
-	    of equivalence(_) then
-	       {UnifyRecursive Exp2 Exp1 Unifications}
-	    [] record|!L|Pairs2 then % recursively unify
-	       Canon1 = {Canonize Pairs1.1}
-	       Canon2 = {Canonize Pairs2.1}
-	    in
-	       {List.zip Canon1 Canon2
-		fun {$ X Y}
-		   {UnifyRecursive
-		    {WeakSubstitute X.2.1} {WeakSubstitute Y.2.1}
-		    Unifications}
-		   unit
-		end
-		_}
-	    else raise incompatibleTypes(Exp1 Exp2) end
-	    end %
-	 else
-	    raise incompatibleTypes(Exp1 Exp2) end
-	 end
+         Unifications = {List.append [Exp1 Exp2] UnificationsSoFar}
+         case Exp1
+         of equivalence(X) then
+            case Exp2
+            of equivalence(Y) then {BindRefToKeyInSAS X Y}
+            else {BindValueToKeyInSAS X Exp2} end
+         [] literal(X) then
+            case Exp2
+            of equivalence(_) then
+               {UnifyRecursive Exp2 Exp1 Unifications}
+            [] literal(!X) then skip
+            else raise incompatibleTypes(Exp1 Exp2) end
+            end
+         [] record | L | Pairs1 then % not label(L)
+            case Exp2
+            of equivalence(_) then
+               {UnifyRecursive Exp2 Exp1 Unifications}
+            [] record|!L|Pairs2 then % recursively unify
+               Canon1 = {Canonize Pairs1.1}
+               Canon2 = {Canonize Pairs2.1}
+            in
+               % check if features of the records are same
+               if {Map Canon1 fun {$ X} X.1 end} == {Map Canon2 fun {$ X} X.1 end} then
+                  {List.zip Canon1 Canon2
+                  fun {$ X Y}
+                     {UnifyRecursive
+                     {WeakSubstitute X.2.1} {WeakSubstitute Y.2.1}
+                     Unifications}
+                     unit
+                  end
+                  _}
+               else raise incompatibleTypes(Exp1 Exp2) end
+            else raise incompatibleTypes(Exp1 Exp2) end
+            end %
+         else
+            raise incompatibleTypes(Exp1 Exp2) end
+         end
       end % if
    end % UnifyRecursive
 
@@ -104,8 +106,4 @@ in
    {UnifyRecursive {SubstituteIdentifiers Exp1 Env}
     {SubstituteIdentifiers Exp2 Env} nil}
 end
-
-
-
-
 

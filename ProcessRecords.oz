@@ -43,7 +43,7 @@ in
 end
 
 %=== Example Usage ===
-% {Browse {HasUniqueEntries {Sort [a 1 2 d c 3] MixedCompare}}}
+% {Browse {HasUniqueEntries {Sort [literal(a) literal(1) literal(2) literal(d) literal(c) literal(3)] MixedCompare}}}
 %=====================
    
 
@@ -58,7 +58,6 @@ fun {Canonize Pairs}
    Keys = {Map Pairs fun {$ X} X.1 end}
    SortedKeys = {Sort Keys MixedCompare}
    FindPairWithKey
-   Result
 in
    if {HasUniqueEntries SortedKeys}
    then
@@ -66,11 +65,11 @@ in
       % return unique K#value pair
       %=======================
       fun {FindPairWithKey K}
-	 {Filter Pairs fun {$ Y} Y.1 == K end}.1
+         {Filter Pairs fun {$ Y} Y.1 == K end}.1
       end
       
       {Map SortedKeys FindPairWithKey}
-   else illegalRecord(Pairs)
+   else illegalRecord(Pairs) %should raise an exception?
    end
 end
 
