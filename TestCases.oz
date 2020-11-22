@@ -68,3 +68,10 @@
 % {BindRefToKeyInSAS 2 1}
 
 %==================================================
+
+%============== Testcase Environment ==============
+
+% {Browse {Adjunction env(m:x n:y o:z) env(n:d)}}
+% {Browse {Restriction env(x:a y:b z:c m:p) [m x]}}
+
+%==================================================

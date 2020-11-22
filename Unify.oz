@@ -32,6 +32,7 @@ in
    fun {SubstituteIdentifiers Exp Env}
       case Exp
       of H|T then {SubstituteIdentifiers H Env}|{SubstituteIdentifiers T Env}
+      % To Handle case of Undefined variables
       [] ident(X) then {RetrieveFromSAS Env.X}
       else Exp end
    end
