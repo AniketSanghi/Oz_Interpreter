@@ -108,6 +108,31 @@
 
 %=======================================================
 
+%=======================================================
+
+
+%============== Testcase 9(Positive): Closure(Free Variables) ============
+
+%{Browse {GetFreeVars [nop]}}
+%{Browse {GetFreeVars [[nop] [nop]]}}   
+%{Browse {GetFreeVars [[var ident(b) [[bind ident(b) ident(a)]]] [nop]]}} 
+%{Browse {GetFreeVars [var ident(x) [[bind ident(x) ident(y)] [nop]]]}}
+%{Browse {GetFreeVars [bind ident(z) literal(4)]}}
+%{Browse {GetFreeVars [var ident(x) [[bind ident(x) [procedure [ident(y) ident(x)] [nop]]]]]}}
+%{Browse {GetFreeVars  [var ident(foo)
+%  [var ident(result)
+%   [
+%    [bind ident(foo) [record literal(bar)  [[literal(baz) literal(42)]     [literal(quux) literal(314)]] ] ]
+%    [match ident(foo) [record literal(bar) [[literal(baz) ident(fortytwo)] [literal(quux) ident(pitimes100)]] ] [bind ident(result) ident(fortytwo)] [bind ident(result) literal(314)] ]
+%    [bind ident(result) literal(42)]
+%    [nop]
+%   ]
+%  ]
+% ]}}
+
+%=======================================================
+
+
 %============== Interpret Code ============
 
 % [var ident(x) [var ident(y) [[nop] [bind ident(x) ident(y)] [bind ident(x) literal(1)]]]]

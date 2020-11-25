@@ -1,5 +1,6 @@
 \insert 'Environment.oz'
 \insert 'Unify.oz'
+\insert 'Closure.oz'
 
 %==================
 % Print Current State of Semantic Stack and SAS
@@ -43,5 +44,7 @@ end
 %=================
 declare
 proc {BindVariable VarX VarY Environment}
-   {Unify VarX VarY Environment}
+   case VarY
+   of [procedure ArgList S] then {Unify VarX (VarY#{Restriction Environment {GetFreeVars VarY}}) Environment}
+   else {Unify VarX VarY Environment}
 end

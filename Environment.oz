@@ -14,6 +14,6 @@ declare
 fun {Restriction Env Features}
    case Features
    of nil then env()
-   [] H|T then {Adjoin env(H: Env.H) {Restriction Env T}}
+   [] ident(H)|T then {Adjoin env(H: Env.H) {Restriction Env T}}
    end
 end
