@@ -47,4 +47,5 @@ proc {BindVariable VarX VarY Environment}
    case VarY
    of [procedure ArgList S] then {Unify VarX (VarY#{Restriction Environment {GetFreeVars VarY}}) Environment}
    else {Unify VarX VarY Environment}
+   end
 end
