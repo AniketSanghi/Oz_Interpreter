@@ -1,5 +1,4 @@
-\insert 'Unify.oz'
-\insert 'Environment.oz'
+\insert 'interpreter.oz'
 
 %============== Testcase 1(Positive): SAS ==============
 
@@ -108,8 +107,6 @@
 
 %=======================================================
 
-%=======================================================
-
 
 %============== Testcase 9(Positive): Closure(Free Variables) ============
 
@@ -135,6 +132,48 @@
 
 %============== Interpret Code ============
 
-% [var ident(x) [var ident(y) [[nop] [bind ident(x) ident(y)] [bind ident(x) literal(1)]]]]
+% OzCode = [var ident(x) [var ident(y) [[nop] [bind ident(x) ident(y)] [bind ident(x) literal(1)]]]]
+% OzCode = [var ident(x) 
+%             [var ident(y) 
+%                [var ident(p) 
+%                   [var ident(q) 
+%                      [[nop] 
+%                       [bind ident(x) [record literal(a) 
+%                                        [[literal(b) ident(p)] 
+%                                         [literal(c) ident(q)]]]]
+%                       [bind ident(y) [record literal(a) 
+%                                        [[literal(b) ident(q)] 
+%                                         [literal(c) ident(p)]]]]
+%                       [bind ident(x) ident(y)]]]]]]
+% OzCode = [var ident(x) 
+%             [var ident(y) 
+%                [var ident(p) 
+%                   [var ident(q) 
+%                      [[nop] 
+%                       [bind ident(p) literal(1)]
+%                       [bind ident(q) literal(2)]
+%                       [bind ident(x) [record literal(a) 
+%                                        [[literal(b) ident(p)] 
+%                                         [literal(c) ident(q)]]]]
+%                       [match ident(x) [record literal(a) 
+%                                        [[literal(c) ident(a)] 
+%                                         [literal(b) ident(b)]]] 
+%                                        [bind ident(b) ident(y)]
+%                                        [bind ident(y) ident(a)]]]]]]]
+% OzCode = [var ident(x) 
+%             [var ident(y) 
+%                [var ident(p) 
+%                   [var ident(q) 
+%                      [[nop] 
+%                       [bind ident(p) literal(1)]
+%                       [bind ident(q) literal(2)]
+%                       [bind ident(x) [record literal(a) 
+%                                        [[literal(b) ident(p)] 
+%                                         [literal(c) ident(q)]]]]
+%                       [match ident(x) [record literal(a) 
+%                                        [[literal(c) ident(a)] 
+%                                         [literal(b) ident(a)]]] 
+%                                        [bind ident(p) ident(y)]
+%                                        [bind ident(y) ident(q)]]]]]]]
 
 %=======================================================
