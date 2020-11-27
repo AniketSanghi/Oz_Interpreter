@@ -3,7 +3,26 @@
 %==================
 % Interpret the Oz Language
 %=================
-declare
+declare Interpret ApplyProc
+
+proc {ApplyProc STop Env Stack}
+   local F in
+   F = {RetrieveFromSAS Env.{GetVar STop.2.1}}
+   case F 
+   of (procedure | ArgList | S)#Closure then
+         if {Length ArgList} \= {Length STop.2.2} then raise Error end
+         else
+            local NewEnv in
+               NewEnv = {Adjoin {Adjoin {GenEnv F.1.2.1 STop.2 Env} Closure} [STop.1 {Get Env STop.1}]}
+               {Interpret (S#NewEnv)|Stack}
+            end
+         end
+   else raise Error end
+   end
+   end
+end
+
+
 proc {Interpret SemanticStack}
    AddStatement
 in
@@ -22,6 +41,8 @@ in
       [] bind then
          {BindVariable STop.2.1 STop.2.2.1 Env}
          {Interpret Stack}
+      [] apply then
+         {ApplyProc STop Env Stack}
       else
          case STop.2.2
          of nil then {Interpret (STop.1#Env) | (STop.2.1#Env) | Stack}
