@@ -68,6 +68,7 @@ fun {Get Env X}
    [] H|T then 
       if H.1==X then H.2.1
       else {Get T X} end
+   else raise Error end
    end
 end
 
@@ -78,7 +79,7 @@ fun {GenEnv X Y Env}
     [] (H1|T1)#(H2|T2) then [H1 {Get Env H2}]|{GenEnv T1 T2 Env}
     else raise Error end
     end
-
+end
 %=====================================================
 % Check if records are compatible for pattern matching
 % and return new environment on a successful match
