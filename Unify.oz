@@ -15,7 +15,6 @@
 %==============
 
 \insert 'SingleAssignmentStore.oz'
-\insert 'ProcessRecords.oz'
 
 declare
 proc {Unify Exp1 Exp2 Env}
@@ -31,22 +30,12 @@ in
    %=================
    fun {SubstituteIdentifiers Exp Env}
       case Exp
-      of H|T then {SubstituteIdentifiers H Env}|{SubstituteIdentifiers T Env}
-      % To Handle case of Undefined variables
+      of record|L|Pairs|nil then [record L {Map Pairs fun {$ X} [X.1 Env.(X.2.1.1)] end}]
+      % todo: Handle case of Undefined variables
       [] ident(X) then {RetrieveFromSAS Env.X}
       else Exp end
    end
 
-   %=================
-   % Used when unifying records. Similar to SubstituteIdentifiers,
-   % except that lists are not unified.
-   %=================
-   fun {WeakSubstitute X}
-      case X
-      of equivalence(A) then {RetrieveFromSAS A}
-      else X end
-   end
-   
    %=================
    % Main unification procedure.
    % Assumes that identifiers have been substituted away, by calling
@@ -89,7 +78,7 @@ in
                   {List.zip Canon1 Canon2
                   fun {$ X Y}
                      {UnifyRecursive
-                     {WeakSubstitute X.2.1} {WeakSubstitute Y.2.1}
+                     {RetrieveFromSAS X.2.1} {RetrieveFromSAS Y.2.1}
                      Unifications}
                      unit
                   end
