@@ -176,4 +176,16 @@
 %                                        [bind ident(p) ident(y)]
 %                                        [bind ident(y) ident(q)]]]]]]]
 
+%OzCode = [var ident(x) [
+%                       [var ident(y) [
+%                                      [bind ident(y) literal(10)]
+%                                      [bind ident(x) [procedure [ident(x1)] [
+%                                                                         [var ident(y) [bind ident(x1) ident(y)]]
+%                                                                         [bind ident(x1) ident(y)]
+%                                                                        ]
+%                                                     ]]
+%                                     ]]
+%                       [var ident(z) [apply ident(x) ident(z)]]
+%                      ]]
+
 %=======================================================

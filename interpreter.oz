@@ -1,30 +1,20 @@
 \insert 'Helper.oz'
 
-%==================
-% Interpret the Oz Language
-%=================
-declare Interpret ApplyProc
 
+declare Interpret ApplyProc
+%==================
+% ApplyProc implements the apply procedure semantics
+% for the interpeter
+%=================
 proc {ApplyProc STop Env Stack}
-   local F in
-   F = {RetrieveFromSAS Env.{GetVar STop.2.1}}
+   local F OzVar in
+   OzVar = (STop.2.1).1
+   F = {RetrieveFromSAS Env.OzVar}
    case F 
    of (procedure | ArgList | S)#Closure then
          if {Length ArgList} \= {Length STop.2.2} then raise Error end
          else
             local NewEnv in
-               %{Show F.1.2.1}
-               %{Show F}
-               %{Show F.1}
-               %{Show F.2}
-               %{Show STop.2.2}
-               %{Show STop.1}
-               %{Show Env.{GetVar STop.1}}
-               %{Show {GenEnv ArgList STop.2.2 Env}}
-               %{Show {Adjoin {GenEnv ArgList STop.2.2 Env} Closure}}
-               %NewEnv = {Adjoin {Adjoin {GenEnv ArgList STop.2.2 Env} Closure} env(STop.2.1: Env.{GetVar STop.2.1})}
-               %{Show NewEnv}
-               %{Show Stack}
                NewEnv = {Adjoin {GenEnv ArgList STop.2.2 Env} Closure}
                {Interpret (S.1#NewEnv)| Stack}
             end
@@ -34,7 +24,9 @@ proc {ApplyProc STop Env Stack}
    end
 end
 
-
+%==================
+% Interpret the Oz Language
+%=================
 proc {Interpret SemanticStack}
    AddStatement ValueInSAS NewEnv
 in

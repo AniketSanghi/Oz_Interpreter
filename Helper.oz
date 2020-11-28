@@ -51,21 +51,18 @@ end
 
 %==================
 % Helpers used for Procedure Application
+% GenEnv maps formal paramters to actual parameters
 %=================
-
-declare
-fun {GetVar V}
-   case V 
-   of ident(X) then X
-   else raise getVarError(debug:unit) end
-   end
-end
 
 declare
 fun {GenEnv X Y Env}
     case X#Y
     of nil#nil then env()
-    [] (H1|T1)#(H2|T2) then {Adjoin env({GetVar H1}: Env.{GetVar H2}) {GenEnv T1 T2 Env}}
+    [] (H1|T1)#(H2|T2) then 
+      SASVarH2 = Env.(H2.1)
+      OzVarH1  = H1.1
+    in
+      {Adjoin env(OzVarH1: SASVarH2) {GenEnv T1 T2 Env}}
     else raise genEnvError(debug:unit) end
     end
 end
