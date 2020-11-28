@@ -57,29 +57,19 @@ declare
 fun {GetVar V}
    case V 
    of ident(X) then X
-   else nil
-   end
-end
-
-declare
-fun {Get Env X}
-   case Env
-   of nil then nil
-   [] H|T then 
-      if H.1==X then H.2.1
-      else {Get T X} end
-   else raise Error end
+   else raise getVarError(debug:unit) end
    end
 end
 
 declare
 fun {GenEnv X Y Env}
     case X#Y
-    of nil#nil then nil
-    [] (H1|T1)#(H2|T2) then [H1 {Get Env H2}]|{GenEnv T1 T2 Env}
-    else raise Error end
+    of nil#nil then env()
+    [] (H1|T1)#(H2|T2) then {Adjoin env({GetVar H1}: Env.{GetVar H2}) {GenEnv T1 T2 Env}}
+    else raise genEnvError(debug:unit) end
     end
 end
+
 %=====================================================
 % Check if records are compatible for pattern matching
 % and return new environment on a successful match

@@ -13,11 +13,23 @@ proc {ApplyProc STop Env Stack}
          if {Length ArgList} \= {Length STop.2.2} then raise Error end
          else
             local NewEnv in
-               NewEnv = {Adjoin {Adjoin {GenEnv F.1.2.1 STop.2 Env} Closure} [STop.1 {Get Env STop.1}]}
-               {Interpret (S#NewEnv)|Stack}
+               %{Show F.1.2.1}
+               %{Show F}
+               %{Show F.1}
+               %{Show F.2}
+               %{Show STop.2.2}
+               %{Show STop.1}
+               %{Show Env.{GetVar STop.1}}
+               %{Show {GenEnv ArgList STop.2.2 Env}}
+               %{Show {Adjoin {GenEnv ArgList STop.2.2 Env} Closure}}
+               %NewEnv = {Adjoin {Adjoin {GenEnv ArgList STop.2.2 Env} Closure} env(STop.2.1: Env.{GetVar STop.2.1})}
+               %{Show NewEnv}
+               %{Show Stack}
+               NewEnv = {Adjoin {GenEnv ArgList STop.2.2 Env} Closure}
+               {Interpret (S.1#NewEnv)| Stack}
             end
          end
-   else raise Error end
+   else raise applyProcError(debug:unit) end
    end
    end
 end
