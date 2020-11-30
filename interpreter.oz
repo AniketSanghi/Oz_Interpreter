@@ -72,36 +72,11 @@ in
 end
 
 
-declare OzCode SemanticStack
+declare InterpretCode
+proc {InterpretCode Code}
+   SemStack = [Code#env()]
+in
+   {Interpret SemStack}
+end
 
-%OzCode = [var ident(x) 
-%            [var ident(y) 
-%               [var ident(p) 
-%                  [var ident(q) 
-%                     [[nop] 
-%                      [bind ident(p) literal(1)]
-%                      [bind ident(q) literal(2)]
-%                      [bind ident(x) [record literal(a) 
-%                                       [[literal(b) ident(p)] 
-%                                        [literal(c) ident(q)]]]]
-%                      [match ident(x) [record literal(a) 
-%                                       [[literal(c) ident(a)] 
-%                                        [literal(b) ident(a)]]] 
-%                                       [bind ident(p) ident(y)]
-%                                       [bind ident(y) ident(q)]]]]]]]
-
- OzCode = [var ident(x) [
-                         [var ident(y) [
-                                        [bind ident(y) literal(10)]
-                                        [bind ident(x) [procedure [ident(x1)] [
-                                                                           [var ident(y) [bind ident(x1) ident(y)]]
-                                                                           [bind ident(x1) ident(y)]
-                                                                          ]
-                                                       ]]
-                                       ]]
-                         [var ident(z) [apply ident(x) ident(z)]]
-                        ]]
-
-SemanticStack = [OzCode#env()]
-{Interpret SemanticStack}
-
+% {InterpretCode [nop]}
