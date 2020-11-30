@@ -16,7 +16,7 @@ in
 	     {PrintStackElem T}
       end
    end
-   
+   {Browse '================================================='}
    {Browse '-----Semantic Stack-----'}
    
    case Stack
