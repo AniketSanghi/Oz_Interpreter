@@ -79,4 +79,17 @@ in
    {Interpret SemStack}
 end
 
-% {InterpretCode [nop]}
+% {InterpretCode [var ident(record)
+%                   [var ident(h)
+%                      [var ident(t)
+%                         [var ident(x)
+%                            [var ident(y)
+%                               [[bind ident(record) [record literal(label) 
+%                                                       [[literal(feature1) ident(t)] [literal(feature2) ident(h)]]]]
+%                                [bind ident(h) literal(1)]
+%                                [bind ident(y) literal(2)]
+%                                [bind ident(t) literal(3)]
+%                                [match ident(record) [record literal(label)
+%                                     [[literal(feature1) ident(h)] [literal(feature2) ident(t)]]]
+%                                     [bind ident(x) ident(h)]
+%                                     [bind ident(x) ident(t)]]]]]]]]}
