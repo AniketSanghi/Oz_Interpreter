@@ -19,7 +19,7 @@ proc {ApplyProc STop Env Stack}
                {Interpret (S.1#NewEnv)| Stack}
             end
          end
-   else raise applyProcError(debug:unit) end
+   else {Delay 1000000} %todo: find a better way to suspend
    end
    end
 end

@@ -84,7 +84,7 @@ fun {EqualRecursive Val1 Val2 EqualsSoFar}
 in
     if {List.member [Val1 Val2] EqualsSoFar} then true
     else
-        Equals = {List.append [Val1 Val2] EqualsSoFar}
+        Equals = {List.append [[Val1 Val2]] EqualsSoFar}
         case Val1
         of record | L | Pairs1 | nil then
             case Val2

@@ -27,11 +27,12 @@ fun {GetFreeVars S}
    case S
    of [nop] then nil
    [] [var ident(X) S] then {SetDiff {GetFreeVars S} (ident(X)| nil)}
-   [] [bind ident(X) ident(Y)] then (ident(X) | ident(Y) | nil)
+   [] [bind ident(X) ident(Y)] then {SetUnion [ident(X)] [ident(Y)]}
    [] [bind ident(X) V] then {SetUnion [ident(X)] {GetFreeVars V}}
    [] [match ident(X) Pat S1 S2] then {SetUnion {SetUnion [ident(X)] {GetFreeVars S2}} {SetDiff {GetFreeVars S1} {GetFreeVars Pat}}}
    [] [procedure ArgList S] then  {SetDiff {GetFreeVars S} ArgList}
    [] [record Lit Pairs] then {SetUnion {Map Pairs fun {$ L} L.2.1 end} nil}
+   [] apply|Func|Params then {SetUnion [Func] Params}
    [] S1|S2 then {SetUnion {GetFreeVars S1} {GetFreeVars S2}}
    else nil
    end

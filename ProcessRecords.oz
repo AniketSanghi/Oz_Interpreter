@@ -69,7 +69,7 @@ in
       end
       
       {Map SortedKeys FindPairWithKey}
-   else illegalRecord(Pairs) %should raise an exception?
+   else raise illegalRecord(Pairs) end %should raise an exception?
    end
 end
 

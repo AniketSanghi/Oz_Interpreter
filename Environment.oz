@@ -15,5 +15,6 @@ fun {Restriction Env Features}
    case Features
    of nil then env()
    [] ident(H)|T then {Adjoin env(H: Env.H) {Restriction Env T}}
+   % todo: Handle scenario where element not found in environment
    end
 end
