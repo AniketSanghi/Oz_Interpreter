@@ -11,7 +11,8 @@ proc {ApplyProc STop Env Stack}
    OzVar = (STop.2.1).1
    F = {RetrieveFromSAS Env.OzVar}
    case F 
-   of (procedure | ArgList | S)#Closure then
+   of equivalence(_) then {Delay 1000000} %todo: find a better way to suspend 
+   [] (procedure | ArgList | S)#Closure then
          if {Length ArgList} \= {Length STop.2.2} then raise Error end
          else
             local NewEnv in
@@ -19,7 +20,7 @@ proc {ApplyProc STop Env Stack}
                {Interpret (S.1#NewEnv)| Stack}
             end
          end
-   else {Delay 1000000} %todo: find a better way to suspend
+   else raise notProcedure(OzVar) end
    end
    end
 end
